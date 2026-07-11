@@ -30,44 +30,28 @@ function ChatPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: next.map((m, i) => ({
-            id: String(i),
-            role: m.role,
-            parts: [{ type: "text", text: m.content }],
-          })),
+          messages: next.map((m) => ({ role: m.role, content: m.content })),
         }),
       });
       if (!res.ok || !res.body) {
-        throw new Error(await res.text());
+        throw new Error((await res.text()) || `HTTP ${res.status}`);
       }
       setMessages((m) => [...m, { role: "assistant", content: "" }]);
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
-      let buf = "";
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const lines = buf.split("\n");
-        buf = lines.pop() ?? "";
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          const data = line.slice(6).trim();
-          if (!data || data === "[DONE]") continue;
-          try {
-            const evt = JSON.parse(data);
-            if (evt.type === "text-delta" && evt.delta) {
-              setMessages((m) => {
-                const copy = [...m];
-                copy[copy.length - 1] = {
-                  role: "assistant",
-                  content: copy[copy.length - 1].content + evt.delta,
-                };
-                return copy;
-              });
-            }
-          } catch { /* ignore */ }
-        }
+        const chunk = decoder.decode(value, { stream: true });
+        if (!chunk) continue;
+        setMessages((m) => {
+          const copy = [...m];
+          copy[copy.length - 1] = {
+            role: "assistant",
+            content: copy[copy.length - 1].content + chunk,
+          };
+          return copy;
+        });
       }
     } catch (e) {
       setMessages((m) => [...m, { role: "assistant", content: `Error: ${(e as Error).message}` }]);
