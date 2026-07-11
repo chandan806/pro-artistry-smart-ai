@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { streamText, convertToModelMessages, type UIMessage } from "ai";
+import { streamText } from "ai";
 import { createLovableAI } from "@/lib/ai-gateway.server";
 
 export const Route = createFileRoute("/api/chat")({
