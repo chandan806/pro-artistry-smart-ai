@@ -36,7 +36,7 @@ function AppShell() {
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   }
-
+  return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 border-r border-border/50 glass p-4 md:flex md:flex-col">
