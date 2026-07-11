@@ -52,12 +52,17 @@ function Landing() {
             <a href="#pricing" className="hover:text-foreground transition">Pricing</a>
             <a href="#features" className="hover:text-foreground transition">Features</a>
           </nav>
-          <Link
-            to="/app"
-            className="rounded-xl bg-gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-glow transition hover:opacity-90"
-          >
-            Open studio
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/auth" className="hidden rounded-xl px-3 py-2 text-sm text-muted-foreground hover:text-foreground sm:inline-flex">
+              Sign in
+            </Link>
+            <Link
+              to="/app"
+              className="rounded-xl bg-gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-glow transition hover:opacity-90"
+            >
+              Open studio
+            </Link>
+          </div>
         </div>
       </header>
 

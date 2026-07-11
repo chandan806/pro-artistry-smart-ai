@@ -1,9 +1,11 @@
-import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import {
   Sparkles, MessageSquare, ImageIcon, Wand2, Video, Palette,
-  Layers, User, Home,
+  Layers, User, Home, LogOut, LogIn,
 } from "lucide-react";
 import type { ComponentType } from "react";
+import { useSession } from "@/hooks/use-session";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/app")({
   head: () => ({
@@ -28,6 +30,12 @@ const nav: { to: string; label: string; icon: ComponentType<{ className?: string
 
 function AppShell() {
   const { pathname } = useLocation();
+  const { user } = useSession();
+  const navigate = useNavigate();
+  async function signOut() {
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -57,16 +65,25 @@ function AppShell() {
             );
           })}
         </nav>
-        <div className="mt-auto glass rounded-2xl p-4">
-          <div className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center rounded-full bg-accent">
-              <User className="h-4 w-4" />
+        <div className="mt-auto glass rounded-2xl p-3">
+          {user ? (
+            <div className="flex items-center gap-3">
+              <div className="grid h-9 w-9 place-items-center rounded-full bg-accent">
+                <User className="h-4 w-4" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-sm font-medium">{user.email}</div>
+                <div className="text-xs text-muted-foreground">Free plan</div>
+              </div>
+              <button onClick={signOut} title="Sign out" className="grid h-8 w-8 place-items-center rounded-lg hover:bg-card">
+                <LogOut className="h-4 w-4" />
+              </button>
             </div>
-            <div className="min-w-0">
-              <div className="truncate text-sm font-medium">Guest</div>
-              <div className="text-xs text-muted-foreground">Free plan</div>
-            </div>
-          </div>
+          ) : (
+            <Link to="/auth" className="flex items-center justify-center gap-2 rounded-xl bg-gradient-brand py-2.5 text-sm font-medium text-primary-foreground shadow-glow">
+              <LogIn className="h-4 w-4" /> Sign in
+            </Link>
+          )}
         </div>
       </aside>
 
