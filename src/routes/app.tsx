@@ -30,7 +30,13 @@ const nav: { to: string; label: string; icon: ComponentType<{ className?: string
 
 function AppShell() {
   const { pathname } = useLocation();
-  return (
+  const { user } = useSession();
+  const navigate = useNavigate();
+  async function signOut() {
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
+
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 border-r border-border/50 glass p-4 md:flex md:flex-col">
