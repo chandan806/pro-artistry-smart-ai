@@ -1,9 +1,11 @@
-import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import {
   Sparkles, MessageSquare, ImageIcon, Wand2, Video, Palette,
-  Layers, User, Home,
+  Layers, User, Home, LogOut, LogIn,
 } from "lucide-react";
 import type { ComponentType } from "react";
+import { useSession } from "@/hooks/use-session";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/app")({
   head: () => ({
