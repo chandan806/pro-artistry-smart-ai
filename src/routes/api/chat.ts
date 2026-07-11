@@ -14,7 +14,7 @@ export const Route = createFileRoute("/api/chat")({
           model: ai("google/gemini-2.5-flash"),
           system:
             "You are Nova, an elite AI creative co-pilot inside a premium creative platform. Help users craft prompts, brainstorm designs, write content, and guide them across image, video, and design tools. Be concise, warm, and inspiring.",
-          messages: convertToModelMessages(messages),
+          messages: await convertToModelMessages(messages),
         });
         return result.toUIMessageStreamResponse();
       },
