@@ -7,7 +7,7 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nova — The world's most advanced AI creative platform" },
+      { title: "VIP Smart— The world's most advanced AI creative platform" },
       { name: "description", content: "Chat, generate images and videos, edit photos, design logos, banners, posters, and more — all with one intelligent AI platform." },
     ],
   }),
