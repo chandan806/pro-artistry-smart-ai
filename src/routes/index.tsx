@@ -30,9 +30,9 @@ const features = [
 ];
 
 const plans = [
-  { name: "Free", price: "₹0", period: "forever", features: ["Daily generations", "Standard quality", "1 GB storage", "Watermark on some outputs"] },
-  { name: "Pro", price: "₹69", period: "/month", features: ["Unlimited generations", "4K quality", "100 GB storage", "No watermark", "Priority queue"], featured: true },
-  { name: "Yearly", price: "₹799", period: "/year", features: ["Everything in Pro", "Commercial license", "1 TB storage", "Early access to new models"] },
+  { name: "Free", price: "₹0", oldPrice: null as string | null, period: "forever", badge: null as string | null, features: ["Daily generations", "Standard quality", "1 GB storage", "Watermark on some outputs"] },
+  { name: "Pro", price: "₹5", oldPrice: "₹69", period: "/month", badge: "Limited offer", features: ["Unlimited generations", "4K quality", "100 GB storage", "No watermark", "Priority queue"], featured: true },
+  { name: "Yearly", price: "₹199", oldPrice: "₹799", period: "/year", badge: "Limited offer", features: ["Everything in Pro", "Commercial license", "1 TB storage", "Early access to new models"] },
 ];
 
 function Landing() {
@@ -167,10 +167,18 @@ function Landing() {
                 </div>
               )}
               <div className="text-lg font-semibold">{p.name}</div>
-              <div className="mt-2 flex items-baseline gap-1">
+              <div className="mt-2 flex items-baseline gap-2">
                 <span className="text-4xl font-bold">{p.price}</span>
                 <span className="text-sm text-muted-foreground">{p.period}</span>
+                {p.oldPrice && (
+                  <span className="text-base text-muted-foreground line-through">{p.oldPrice}</span>
+                )}
               </div>
+              {p.badge && (
+                <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-destructive/15 px-2.5 py-1 text-[11px] font-semibold text-destructive">
+                  🔥 {p.badge} — high rate <span className="line-through opacity-70">{p.oldPrice}</span>
+                </div>
+              )}
               <ul className="mt-6 space-y-3 text-sm">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-center gap-2">
