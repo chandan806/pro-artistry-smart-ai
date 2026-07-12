@@ -167,10 +167,18 @@ function Landing() {
                 </div>
               )}
               <div className="text-lg font-semibold">{p.name}</div>
-              <div className="mt-2 flex items-baseline gap-1">
+              <div className="mt-2 flex items-baseline gap-2">
                 <span className="text-4xl font-bold">{p.price}</span>
                 <span className="text-sm text-muted-foreground">{p.period}</span>
+                {p.oldPrice && (
+                  <span className="text-base text-muted-foreground line-through">{p.oldPrice}</span>
+                )}
               </div>
+              {p.badge && (
+                <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-destructive/15 px-2.5 py-1 text-[11px] font-semibold text-destructive">
+                  🔥 {p.badge} — high rate <span className="line-through opacity-70">{p.oldPrice}</span>
+                </div>
+              )}
               <ul className="mt-6 space-y-3 text-sm">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-center gap-2">
