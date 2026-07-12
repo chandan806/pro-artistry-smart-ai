@@ -20,6 +20,7 @@ import { Route as AppEditRouteImport } from './routes/app.edit'
 import { Route as AppDesignRouteImport } from './routes/app.design'
 import { Route as AppChatRouteImport } from './routes/app.chat'
 import { Route as ApiGenerateImageRouteImport } from './routes/api/generate-image'
+import { Route as ApiEnhancePromptRouteImport } from './routes/api/enhance-prompt'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
 const AuthRoute = AuthRouteImport.update({
@@ -77,6 +78,11 @@ const ApiGenerateImageRoute = ApiGenerateImageRouteImport.update({
   path: '/api/generate-image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiEnhancePromptRoute = ApiEnhancePromptRouteImport.update({
+  id: '/api/enhance-prompt',
+  path: '/api/enhance-prompt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/enhance-prompt': typeof ApiEnhancePromptRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/app/chat': typeof AppChatRoute
   '/app/design': typeof AppDesignRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/enhance-prompt': typeof ApiEnhancePromptRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/app/chat': typeof AppChatRoute
   '/app/design': typeof AppDesignRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/enhance-prompt': typeof ApiEnhancePromptRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/app/chat': typeof AppChatRoute
   '/app/design': typeof AppDesignRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/api/chat'
+    | '/api/enhance-prompt'
     | '/api/generate-image'
     | '/app/chat'
     | '/app/design'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/api/chat'
+    | '/api/enhance-prompt'
     | '/api/generate-image'
     | '/app/chat'
     | '/app/design'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/api/chat'
+    | '/api/enhance-prompt'
     | '/api/generate-image'
     | '/app/chat'
     | '/app/design'
@@ -174,6 +186,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiEnhancePromptRoute: typeof ApiEnhancePromptRoute
   ApiGenerateImageRoute: typeof ApiGenerateImageRoute
 }
 
@@ -256,6 +269,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiGenerateImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/enhance-prompt': {
+      id: '/api/enhance-prompt'
+      path: '/api/enhance-prompt'
+      fullPath: '/api/enhance-prompt'
+      preLoaderRoute: typeof ApiEnhancePromptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -293,6 +313,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiEnhancePromptRoute: ApiEnhancePromptRoute,
   ApiGenerateImageRoute: ApiGenerateImageRoute,
 }
 export const routeTree = rootRouteImport
