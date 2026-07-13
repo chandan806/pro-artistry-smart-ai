@@ -29,11 +29,6 @@ const features = [
   { icon: Globe, title: "Global", desc: "Optimized for every device, worldwide." },
 ];
 
-const plans = [
-  { name: "Free", price: "₹0", oldPrice: null as string | null, period: "forever", badge: null as string | null, features: ["Daily generations", "Standard quality", "1 GB storage", "Watermark on some outputs"] },
-  { name: "Pro", price: "₹5", oldPrice: "₹69", period: "/month", badge: "Limited offer", features: ["Unlimited generations", "4K quality", "100 GB storage", "No watermark", "Priority queue"], featured: true },
-  { name: "Yearly", price: "₹199", oldPrice: "₹799", period: "/year", badge: "Limited offer", features: ["Everything in Pro", "Commercial license", "1 TB storage", "Early access to new models"] },
-];
 
 function Landing() {
   return (
@@ -49,7 +44,7 @@ function Landing() {
           </Link>
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
             <a href="#tools" className="hover:text-foreground transition">Tools</a>
-            <a href="#pricing" className="hover:text-foreground transition">Pricing</a>
+            <a href="#features" className="hover:text-foreground transition">Features</a>
             <a href="#features" className="hover:text-foreground transition">Features</a>
           </nav>
           <div className="flex items-center gap-2">
@@ -149,60 +144,21 @@ function Landing() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
-        <div className="mb-12 text-center">
-          <h2 className="text-4xl font-bold md:text-5xl">Simple, generous pricing</h2>
-          <p className="mt-3 text-muted-foreground">Try Nova for as little as ₹1.</p>
+      {/* Free callout */}
+      <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
+        <div className="glass rounded-3xl p-10 text-center shadow-elegant">
+          <h2 className="text-4xl font-bold md:text-5xl">Every tool. <span className="text-gradient">Free forever.</span></h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">No subscriptions, no credits, no upgrade walls. Sign in and start creating.</p>
+          <Link
+            to="/app"
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-glow transition hover:opacity-90"
+          >
+            Open studio
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {plans.map((p) => (
-            <div
-              key={p.name}
-              className={`glass rounded-3xl p-8 transition ${p.featured ? "ring-2 ring-brand shadow-glow" : ""}`}
-            >
-              {p.featured && (
-                <div className="mb-3 inline-flex rounded-full bg-gradient-brand px-3 py-1 text-xs font-semibold text-primary-foreground">
-                  Most popular
-                </div>
-              )}
-              <div className="text-lg font-semibold">{p.name}</div>
-              <div className="mt-2 flex items-baseline gap-2">
-                <span className="text-4xl font-bold">{p.price}</span>
-                <span className="text-sm text-muted-foreground">{p.period}</span>
-                {p.oldPrice && (
-                  <span className="text-base text-muted-foreground line-through">{p.oldPrice}</span>
-                )}
-              </div>
-              {p.badge && (
-                <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-destructive/15 px-2.5 py-1 text-[11px] font-semibold text-destructive">
-                  🔥 {p.badge} — high rate <span className="line-through opacity-70">{p.oldPrice}</span>
-                </div>
-              )}
-              <ul className="mt-6 space-y-3 text-sm">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-brand" /> {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/app"
-                className={`mt-8 block rounded-xl px-4 py-2.5 text-center text-sm font-medium transition ${
-                  p.featured
-                    ? "bg-gradient-brand text-primary-foreground shadow-glow hover:opacity-90"
-                    : "glass hover:bg-card"
-                }`}
-              >
-                Get started
-              </Link>
-            </div>
-          ))}
-        </div>
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          Also available: ₹1/hr · ₹2/2hr · ₹2/day · ₹11/week
-        </p>
       </section>
+
 
       <footer className="border-t border-border/50 py-10 text-center text-sm text-muted-foreground">
         © {new Date().getFullYear()} Nova. Crafted for creators.
