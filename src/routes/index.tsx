@@ -1,26 +1,26 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  Sparkles, Wand2, ImageIcon, Video, Palette, MessageSquare,
-  ArrowRight, Zap, Shield, Globe, Layers, Check,
+  Sparkles, Wand2, ImageIcon, Video, Palette, MessageSquare, PenLine,
+  ArrowRight, Zap, Shield, Globe, Layers,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "VIP Smart— The world's most advanced AI creative platform" },
-      { name: "description", content: "Chat, generate images and videos, edit photos, design logos, banners, posters, and more — all with one intelligent AI platform." },
+      { title: "Nova — The world's most advanced AI creative platform" },
+      { name: "description", content: "Chat, generate images and videos, edit photos, design logos, write content — all free and unlimited with one AI platform." },
     ],
   }),
   component: Landing,
 });
 
-const tools = [
-  { icon: MessageSquare, name: "AI Chat", desc: "Your creative co-pilot" },
-  { icon: ImageIcon, name: "Image Generator", desc: "Any style, any prompt" },
-  { icon: Wand2, name: "Photo Editor", desc: "Edit with words" },
-  { icon: Video, name: "Video Generator", desc: "Text & image to video" },
-  { icon: Palette, name: "Graphic Designer", desc: "Logos, banners, posters" },
-  { icon: Layers, name: "Template Library", desc: "1000+ templates" },
+const tools: { to: "/app/chat" | "/app/image" | "/app/edit" | "/app/video" | "/app/design" | "/app/writer" | "/app/templates"; icon: typeof MessageSquare; name: string; desc: string }[] = [
+  { to: "/app/chat", icon: MessageSquare, name: "AI Chat", desc: "Your creative co-pilot" },
+  { to: "/app/image", icon: ImageIcon, name: "Image Generator", desc: "Any style, any prompt" },
+  { to: "/app/edit", icon: Wand2, name: "Photo Editor", desc: "Edit with words" },
+  { to: "/app/video", icon: Video, name: "Video Generator", desc: "Text & image to video" },
+  { to: "/app/design", icon: Palette, name: "Graphic Designer", desc: "Logos, banners, posters" },
+  { to: "/app/writer", icon: PenLine, name: "AI Writer", desc: "Blog, email, resume & more" },
 ];
 
 const features = [
@@ -45,7 +45,7 @@ function Landing() {
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
             <a href="#tools" className="hover:text-foreground transition">Tools</a>
             <a href="#features" className="hover:text-foreground transition">Features</a>
-            <a href="#features" className="hover:text-foreground transition">Features</a>
+            <Link to="/app" className="hover:text-foreground transition">Studio</Link>
           </nav>
           <div className="flex items-center gap-2">
             <Link to="/auth" className="hidden rounded-xl px-3 py-2 text-sm text-muted-foreground hover:text-foreground sm:inline-flex">
@@ -93,13 +93,13 @@ function Landing() {
 
           {/* Preview card */}
           <div className="glass mt-16 rounded-3xl p-4 shadow-elegant md:p-6">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
               {tools.map((t) => (
-                <div key={t.name} className="glass rounded-2xl p-4 transition hover:shadow-glow">
+                <Link key={t.name} to={t.to} className="glass rounded-2xl p-4 transition hover:-translate-y-0.5 hover:shadow-glow">
                   <t.icon className="h-6 w-6 text-brand" />
                   <div className="mt-3 text-sm font-semibold">{t.name}</div>
                   <div className="text-xs text-muted-foreground">{t.desc}</div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -113,20 +113,32 @@ function Landing() {
           <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">From logos to cinematic videos — describe it, we generate it.</p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            "AI Chat Assistant","AI Image Generator","AI Video Generator","AI Photo Editor",
-            "Background Remover","AI Upscaler","Face Editing","Image to Video",
-            "Logo Maker","Poster & Banner","Thumbnail Maker","Social Media Design",
-            "Presentation Maker","Resume Maker","PDF Creator","Content Writer",
-          ].map((n) => (
-            <div key={n} className="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:shadow-glow">
+          {([
+            ["AI Chat Assistant", "/app/chat"],
+            ["AI Image Generator", "/app/image"],
+            ["AI Video Generator", "/app/video"],
+            ["AI Photo Editor", "/app/edit"],
+            ["Background Remover", "/app/edit"],
+            ["AI Upscaler", "/app/edit"],
+            ["Face Editing", "/app/edit"],
+            ["Image to Video", "/app/video"],
+            ["Logo Maker", "/app/design"],
+            ["Poster & Banner", "/app/design"],
+            ["Thumbnail Maker", "/app/design"],
+            ["Social Media Design", "/app/design"],
+            ["Presentation Maker", "/app/writer"],
+            ["Resume Maker", "/app/writer"],
+            ["Blog & Email Writer", "/app/writer"],
+            ["Content Writer", "/app/writer"],
+          ] as const).map(([n, to]) => (
+            <Link key={n} to={to} className="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:shadow-glow">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-brand">
                   <Sparkles className="h-4 w-4 text-primary-foreground" />
                 </div>
                 <div className="font-semibold">{n}</div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import {
   Sparkles, MessageSquare, ImageIcon, Wand2, Video, Palette,
-  Layers, User, Home, LogOut, LogIn,
+  Layers, PenLine, User, Home, LogOut, LogIn,
 } from "lucide-react";
 import type { ComponentType } from "react";
 import { useSession } from "@/hooks/use-session";
@@ -21,11 +21,12 @@ export const Route = createFileRoute("/app")({
 const nav: { to: string; label: string; icon: ComponentType<{ className?: string }> }[] = [
   { to: "/app", label: "Home", icon: Home },
   { to: "/app/chat", label: "AI Chat", icon: MessageSquare },
-  { to: "/app/image", label: "Image Generator", icon: ImageIcon },
+  { to: "/app/image", label: "Image", icon: ImageIcon },
   { to: "/app/edit", label: "Photo Editor", icon: Wand2 },
-  { to: "/app/video", label: "Video (soon)", icon: Video },
-  { to: "/app/design", label: "Designer (soon)", icon: Palette },
-  { to: "/app/templates", label: "Templates (soon)", icon: Layers },
+  { to: "/app/video", label: "Video", icon: Video },
+  { to: "/app/design", label: "Designer", icon: Palette },
+  { to: "/app/writer", label: "Writer", icon: PenLine },
+  { to: "/app/templates", label: "Templates", icon: Layers },
 ];
 
 function AppShell() {
