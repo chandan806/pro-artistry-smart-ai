@@ -48,26 +48,12 @@ function WriterPage() {
       if (!res.ok || !res.body) throw new Error(await res.text());
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
-      let buf = "";
       let acc = "";
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const lines = buf.split("\n");
-        buf = lines.pop() ?? "";
-        for (const line of lines) {
-          if (!line.startsWith("data:")) continue;
-          const data = line.slice(5).trim();
-          if (!data || data === "[DONE]") continue;
-          try {
-            const parsed = JSON.parse(data);
-            if (parsed.type === "text-delta" && typeof parsed.delta === "string") {
-              acc += parsed.delta;
-              setOutput(acc);
-            }
-          } catch {}
-        }
+        acc += decoder.decode(value, { stream: true });
+        setOutput(acc);
       }
       if (!acc) setOutput("(no response — try again)");
     } catch (e) {

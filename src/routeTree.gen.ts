@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppWriterRouteImport } from './routes/app.writer'
 import { Route as AppVideoRouteImport } from './routes/app.video'
 import { Route as AppTemplatesRouteImport } from './routes/app.templates'
 import { Route as AppImageRouteImport } from './routes/app.image'
@@ -41,6 +42,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWriterRoute = AppWriterRouteImport.update({
+  id: '/writer',
+  path: '/writer',
   getParentRoute: () => AppRoute,
 } as any)
 const AppVideoRoute = AppVideoRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/app/image': typeof AppImageRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app/video': typeof AppVideoRoute
+  '/app/writer': typeof AppWriterRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/app/image': typeof AppImageRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app/video': typeof AppVideoRoute
+  '/app/writer': typeof AppWriterRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/app/image': typeof AppImageRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app/video': typeof AppVideoRoute
+  '/app/writer': typeof AppWriterRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/app/image'
     | '/app/templates'
     | '/app/video'
+    | '/app/writer'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/app/image'
     | '/app/templates'
     | '/app/video'
+    | '/app/writer'
     | '/app'
   id:
     | '__root__'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/app/image'
     | '/app/templates'
     | '/app/video'
+    | '/app/writer'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -218,6 +230,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/writer': {
+      id: '/app/writer'
+      path: '/writer'
+      fullPath: '/app/writer'
+      preLoaderRoute: typeof AppWriterRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/video': {
@@ -293,6 +312,7 @@ interface AppRouteChildren {
   AppImageRoute: typeof AppImageRoute
   AppTemplatesRoute: typeof AppTemplatesRoute
   AppVideoRoute: typeof AppVideoRoute
+  AppWriterRoute: typeof AppWriterRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -303,6 +323,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppImageRoute: AppImageRoute,
   AppTemplatesRoute: AppTemplatesRoute,
   AppVideoRoute: AppVideoRoute,
+  AppWriterRoute: AppWriterRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
