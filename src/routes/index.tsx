@@ -29,11 +29,6 @@ const features = [
   { icon: Globe, title: "Global", desc: "Optimized for every device, worldwide." },
 ];
 
-const plans = [
-  { name: "Free", price: "₹0", oldPrice: null as string | null, period: "forever", badge: null as string | null, features: ["Daily generations", "Standard quality", "1 GB storage", "Watermark on some outputs"] },
-  { name: "Pro", price: "₹5", oldPrice: "₹69", period: "/month", badge: "Limited offer", features: ["Unlimited generations", "4K quality", "100 GB storage", "No watermark", "Priority queue"], featured: true },
-  { name: "Yearly", price: "₹199", oldPrice: "₹799", period: "/year", badge: "Limited offer", features: ["Everything in Pro", "Commercial license", "1 TB storage", "Early access to new models"] },
-];
 
 function Landing() {
   return (
