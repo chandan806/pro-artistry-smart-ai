@@ -88,7 +88,7 @@ function Landing() {
                 Explore tools
               </a>
             </div>
-            <p className="mt-6 text-xs text-muted-foreground">No credit card required · 1 GB free storage</p>
+            <p className="mt-6 text-xs text-muted-foreground">100% free · Unlimited use · No signup required</p>
           </div>
 
           {/* Preview card */}
@@ -160,7 +160,7 @@ function Landing() {
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
         <div className="glass rounded-3xl p-10 text-center shadow-elegant">
           <h2 className="text-4xl font-bold md:text-5xl">Every tool. <span className="text-gradient">Free forever.</span></h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">No subscriptions, no credits, no upgrade walls. Sign in and start creating.</p>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">No subscriptions, no limits, no paywalls. Just open the studio and start creating.</p>
           <Link
             to="/app"
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-glow transition hover:opacity-90"
