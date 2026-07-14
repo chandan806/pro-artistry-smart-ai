@@ -9,6 +9,9 @@ type GeminiTextResponse = {
 };
 
 type GeminiImageResponse = {
+  output_image?: { mime_type?: string; mimeType?: string; data?: string };
+  outputImage?: { mime_type?: string; mimeType?: string; data?: string };
+  outputs?: Array<{ type?: string; mime_type?: string; mimeType?: string; data?: string }>;
   candidates?: Array<{
     content?: {
       parts?: Array<{
@@ -62,6 +65,32 @@ async function callGemini<T>(model: string, body: unknown): Promise<T> {
   return data as T;
 }
 
+async function callGeminiInteraction<T>(body: unknown): Promise<T> {
+  const key = getGeminiKey();
+  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-key": key,
+    },
+    body: JSON.stringify(body),
+  });
+
+  const text = await response.text();
+  let data: GeminiImageResponse | undefined;
+  try {
+    data = text ? JSON.parse(text) : undefined;
+  } catch {
+    data = undefined;
+  }
+
+  if (!response.ok) {
+    throw new Error(data?.error?.message ?? text ?? `Gemini image request failed (${response.status})`);
+  }
+
+  return data as T;
+}
+
 export async function generateGeminiText(options: {
   system?: string;
   messages: Array<{ role: string; content: string }>;
@@ -91,15 +120,28 @@ export async function generateGeminiText(options: {
 }
 
 export async function generateGeminiImage(options: { prompt: string; image?: string }) {
-  const parts: GeminiContent["parts"] = [{ text: options.prompt }];
+  const input: Array<{ type: "text"; text: string } | { type: "image"; mime_type: string; data: string }> = [
+    { type: "text", text: options.prompt },
+  ];
   if (options.image) {
-    parts.push({ inlineData: dataUrlToInlineData(options.image) });
+    const inline = dataUrlToInlineData(options.image);
+    input.push({ type: "image", mime_type: inline.mimeType, data: inline.data });
   }
 
-  const data = await callGemini<GeminiImageResponse>("gemini-2.0-flash-preview-image-generation", {
-    contents: [{ role: "user", parts }],
-    generationConfig: { responseModalities: ["TEXT", "IMAGE"] },
+  const data = await callGeminiInteraction<GeminiImageResponse>({
+    model: "gemini-3.1-flash-image",
+    input,
   });
+
+  const outputImage = data.output_image ?? data.outputImage;
+  if (outputImage?.data) {
+    return `data:${outputImage.mime_type ?? outputImage.mimeType ?? "image/png"};base64,${outputImage.data}`;
+  }
+
+  const output = data.outputs?.find((item) => item.type === "image" && item.data);
+  if (output?.data) {
+    return `data:${output.mime_type ?? output.mimeType ?? "image/png"};base64,${output.data}`;
+  }
 
   const imagePart = data.candidates?.[0]?.content?.parts?.find(
     (part) => part.inlineData?.data || part.inline_data?.data,
