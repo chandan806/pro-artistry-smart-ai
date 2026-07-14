@@ -74,7 +74,7 @@ function AppShell() {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="truncate text-sm font-medium">{user.email}</div>
-                <div className="text-xs text-muted-foreground">Free plan</div>
+                <div className="text-xs text-muted-foreground">Unlimited · Free</div>
               </div>
               <button onClick={signOut} title="Sign out" className="grid h-8 w-8 place-items-center rounded-lg hover:bg-card">
                 <LogOut className="h-4 w-4" />
