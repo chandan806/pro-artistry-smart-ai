@@ -88,7 +88,7 @@ function Landing() {
                 Explore tools
               </a>
             </div>
-            <p className="mt-6 text-xs text-muted-foreground">No credit card required · 1 GB free storage</p>
+            <p className="mt-6 text-xs text-muted-foreground">100% free · Unlimited use · No signup required</p>
           </div>
 
           {/* Preview card */}
