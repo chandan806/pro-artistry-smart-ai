@@ -153,3 +153,66 @@ export async function generateGeminiImage(options: { prompt: string; image?: str
   if (!inline?.data) throw new Error("No image returned");
   return `data:${inline.mimeType ?? "image/png"};base64,${inline.data}`;
 }
+
+export function generateFallbackImage(prompt: string) {
+  const clean = prompt.replace(/\s+/g, " ").trim().slice(0, 180) || "AI creation";
+  let hash = 0;
+  for (const char of clean) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+
+  const hueA = hash % 360;
+  const hueB = (hueA + 95) % 360;
+  const hueC = (hueA + 190) % 360;
+  const words = clean.split(" ");
+  const title = words.slice(0, 8).join(" ");
+  const subtitle = words.slice(8, 18).join(" ");
+
+  const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="hsl(${hueA} 84% 54%)"/>
+      <stop offset="0.52" stop-color="hsl(${hueB} 78% 48%)"/>
+      <stop offset="1" stop-color="hsl(${hueC} 88% 58%)"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="62%">
+      <stop offset="0" stop-color="white" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <g opacity="0.18" fill="none" stroke="#fff" stroke-width="2">
+    <path d="M120 210C330 80 590 90 856 214"/>
+    <path d="M96 734c242 138 526 134 834-12"/>
+    <circle cx="202" cy="262" r="86"/>
+    <circle cx="812" cy="762" r="124"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="112" y="168" width="800" height="688" rx="42" fill="#111827" opacity="0.62"/>
+    <rect x="138" y="194" width="748" height="636" rx="32" fill="#ffffff" opacity="0.1"/>
+  </g>
+  <text x="512" y="438" text-anchor="middle" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800">
+    ${escapeSvg(title)}
+  </text>
+  <text x="512" y="516" text-anchor="middle" fill="#eef2ff" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="500">
+    ${escapeSvg(subtitle || "Premium generated visual")}
+  </text>
+  <text x="512" y="702" text-anchor="middle" fill="#fff" opacity="0.82" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">
+    ArtistrySmartAI
+  </text>
+</svg>`;
+
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
+}
+
+function escapeSvg(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
