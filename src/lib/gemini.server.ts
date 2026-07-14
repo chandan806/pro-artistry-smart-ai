@@ -96,7 +96,7 @@ export async function generateGeminiImage(options: { prompt: string; image?: str
     parts.push({ inlineData: dataUrlToInlineData(options.image) });
   }
 
-  const data = await callGemini<GeminiImageResponse>("gemini-2.5-flash-image-preview", {
+  const data = await callGemini<GeminiImageResponse>("gemini-2.0-flash-preview-image-generation", {
     contents: [{ role: "user", parts }],
     generationConfig: { responseModalities: ["TEXT", "IMAGE"] },
   });
