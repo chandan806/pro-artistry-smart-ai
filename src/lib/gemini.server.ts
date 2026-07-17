@@ -10,7 +10,7 @@ type OpenRouterResponse = {
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const TEXT_MODEL = "google/gemini-2.5-flash";
-const IMAGE_MODEL = "google/gemini-2.5-flash-image-preview";
+const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 function getKey() {
   const key = process.env.OPENROUTER_API_KEY;
