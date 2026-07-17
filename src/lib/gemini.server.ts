@@ -9,7 +9,7 @@ type OpenRouterResponse = {
 };
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const TEXT_MODEL = "google/gemini-2.5-flash";
+const TEXT_MODEL = "tencent/hy3:free";
 const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 function getKey() {
