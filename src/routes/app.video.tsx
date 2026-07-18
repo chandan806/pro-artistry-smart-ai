@@ -473,46 +473,4 @@ function VideoPage() {
 • Reels, shorts, ads, cinematic scenes`} />
     </div>
   );
-}  );
-}
-
-function Setting({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="flex flex-col gap-1">
-      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-function buildShots(n: number): string[] {
-  const base = [
-    "wide establishing shot",
-    "medium shot, subject center",
-    "close-up detail",
-    "dynamic action moment",
-    "over-the-shoulder perspective",
-    "low-angle hero shot",
-    "tracking shot, subject in motion",
-    "high-angle overview",
-    "extreme close-up, emotional",
-    "profile silhouette shot",
-    "wide reveal with foreground element",
-    "reaction shot",
-    "environment texture detail",
-    "cinematic push-in",
-    "sweeping crane shot",
-    "final dramatic wide shot",
-  ];
-  return base.slice(0, Math.max(4, Math.min(16, n)));
-}
-
-function loadImage(url: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = url;
-  });
 }
