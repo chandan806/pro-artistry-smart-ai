@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Layers, Sparkles, Loader2, Download } from "lucide-react";
+import AssistantWidget from "@/components/AssistantWidget";
 
 export const Route = createFileRoute("/app/templates")({
   component: TemplatesPage,
@@ -126,6 +127,10 @@ function TemplatesPage() {
           );
         })}
       </div>
+      <AssistantWidget toolName={"Template Library"} capabilities={`• 17 categories of ready-to-use templates
+• Instagram, YouTube, LinkedIn, TikTok
+• Business, e-commerce, education, events
+• Generated fresh on demand, unlimited`} />
     </div>
   );
 }

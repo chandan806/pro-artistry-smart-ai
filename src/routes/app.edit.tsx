@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sparkles, Loader2, Upload, Download } from "lucide-react";
 import { toast } from "sonner";
+import AssistantWidget from "@/components/AssistantWidget";
 
 export const Route = createFileRoute("/app/edit")({
   component: EditPage,
@@ -144,6 +145,10 @@ function EditPage() {
           </div>
         </div>
       </div>
+      <AssistantWidget toolName={"AI Photo Editor"} capabilities={`• Natural-language edits ('make it sunset', 'add snow')
+• Remove background, upscale, restore old photos
+• Face retouch, color grade, add/remove objects
+• Style transfer, cartoonify, restore B&W`} />
     </div>
   );
 }

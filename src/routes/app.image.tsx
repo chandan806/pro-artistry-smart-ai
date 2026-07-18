@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, Loader2, Download, Upload, Camera, X, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
+import AssistantWidget from "@/components/AssistantWidget";
 
 export const Route = createFileRoute("/app/image")({
   component: ImagePage,
@@ -242,6 +243,11 @@ function ImagePage() {
           </div>
         </div>
       )}
+      <AssistantWidget toolName={"AI Image Generator"} capabilities={`• Text-to-image with any style (cinematic, anime, 3D, watercolor, cyberpunk...)
+• Aspect ratios 1:1, 16:9, 9:16, 4:3, 3:2
+• Transform reference photos (upload, camera, drag-drop)
+• Product shots, logos, portraits, landscapes, abstract art
+• Download PNG · unlimited free`} />
     </div>
   );
 }
