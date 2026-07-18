@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+import AssistantWidget from "@/components/AssistantWidget";
   Video, Loader2, Play, Pause, Download, Sparkles, Wand2, Upload, Music, Image as ImageIcon, X,
 } from "lucide-react";
 
@@ -465,47 +466,11 @@ function VideoPage() {
           <canvas ref={canvasRef} className="hidden" />
         </>
       )}
+      <AssistantWidget toolName={"AI Video Generator"} capabilities={`• Text-to-video storyboards (6 cinematic frames)
+• Image-to-video, audio-to-video
+• Aspect 16:9, 9:16, 1:1 · up to 60s · 720p–4K · custom FPS
+• MP4/WebM export with audio muxing
+• Reels, shorts, ads, cinematic scenes`} />
     </div>
   );
-}
-
-function Setting({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="flex flex-col gap-1">
-      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-function buildShots(n: number): string[] {
-  const base = [
-    "wide establishing shot",
-    "medium shot, subject center",
-    "close-up detail",
-    "dynamic action moment",
-    "over-the-shoulder perspective",
-    "low-angle hero shot",
-    "tracking shot, subject in motion",
-    "high-angle overview",
-    "extreme close-up, emotional",
-    "profile silhouette shot",
-    "wide reveal with foreground element",
-    "reaction shot",
-    "environment texture detail",
-    "cinematic push-in",
-    "sweeping crane shot",
-    "final dramatic wide shot",
-  ];
-  return base.slice(0, Math.max(4, Math.min(16, n)));
-}
-
-function loadImage(url: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = url;
-  });
 }

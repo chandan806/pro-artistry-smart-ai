@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PenLine, Loader2, Copy, Check, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import AssistantWidget from "@/components/AssistantWidget";
 
 export const Route = createFileRoute("/app/writer")({
   component: WriterPage,
@@ -158,6 +159,10 @@ function WriterPage() {
           )}
         </div>
       </div>
+      <AssistantWidget toolName={"AI Writer"} capabilities={`• Blog posts, essays, scripts, captions
+• Ad copy, product descriptions, emails
+• Rewrite, summarize, translate
+• Study notes, homework help`} />
     </div>
   );
 }

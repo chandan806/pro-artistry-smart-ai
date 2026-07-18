@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Palette, Loader2, Sparkles, Download } from "lucide-react";
+import AssistantWidget from "@/components/AssistantWidget";
 
 export const Route = createFileRoute("/app/design")({
   component: DesignPage,
@@ -106,6 +107,10 @@ function DesignPage() {
           </div>
         </div>
       )}
+      <AssistantWidget toolName={"AI Graphic Designer"} capabilities={`• Logos, posters, banners, YouTube thumbnails
+• Instagram posts, business cards, flyers
+• Brand kits, social media graphics
+• Preset-driven, ready to download`} />
     </div>
   );
 }
