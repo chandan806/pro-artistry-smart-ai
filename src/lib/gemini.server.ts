@@ -1,7 +1,7 @@
 // AI provider layer — powered by OpenRouter for unified access to top models.
 // Kept the filename for backwards compatibility with existing imports.
 
-type ChatMessage = { role: string; content: string };
+type ChatMessage = { role: string; content: string; images?: string[] };
 
 type OpenRouterResponse = {
   choices?: Array<{ message?: { content?: string; images?: Array<{ image_url?: { url?: string } }> } }>;
@@ -10,6 +10,10 @@ type OpenRouterResponse = {
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const TEXT_MODEL = "tencent/hy3:free";
+const VISION_MODELS = [
+  "google/gemini-2.0-flash-exp:free",
+  "meta-llama/llama-3.2-11b-vision-instruct:free",
+];
 const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 function getKey() {
@@ -46,24 +50,47 @@ export async function generateGeminiText(options: {
   system?: string;
   messages: ChatMessage[];
 }) {
-  const messages: Array<{ role: string; content: string }> = [];
+  const today = new Date().toISOString().slice(0, 10);
   const systemText = [
+    `Today's date: ${today}. Stay current and mention the latest info/updates when relevant.`,
     options.system,
     ...options.messages.filter((m) => m.role === "system").map((m) => m.content),
   ]
     .filter(Boolean)
     .join("\n\n");
+
+  const hasImages = options.messages.some((m) => (m.images?.length ?? 0) > 0);
+
+  const messages: Array<{ role: string; content: unknown }> = [];
   if (systemText) messages.push({ role: "system", content: systemText });
   for (const m of options.messages) {
     if (m.role === "system") continue;
-    if (!m.content?.trim()) continue;
-    messages.push({ role: m.role === "assistant" ? "assistant" : "user", content: m.content });
+    const text = (m.content ?? "").trim();
+    const imgs = m.images ?? [];
+    if (!text && imgs.length === 0) continue;
+    const role = m.role === "assistant" ? "assistant" : "user";
+    if (imgs.length > 0 && role === "user") {
+      const content: Array<Record<string, unknown>> = [];
+      if (text) content.push({ type: "text", text });
+      for (const url of imgs) content.push({ type: "image_url", image_url: { url } });
+      messages.push({ role, content });
+    } else {
+      messages.push({ role, content: text });
+    }
   }
 
-  const data = await callOpenRouter({ model: TEXT_MODEL, messages });
-  const output = data.choices?.[0]?.message?.content?.trim();
-  if (!output) throw new Error("No AI response returned");
-  return output;
+  const modelsToTry = hasImages ? VISION_MODELS : [TEXT_MODEL, ...VISION_MODELS];
+  let lastError: unknown;
+  for (const model of modelsToTry) {
+    try {
+      const data = await callOpenRouter({ model, messages });
+      const output = data.choices?.[0]?.message?.content?.trim();
+      if (output) return output;
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  throw new Error(lastError instanceof Error ? lastError.message : "No AI response returned");
 }
 
 function dataUrlParts(dataUrl: string) {
