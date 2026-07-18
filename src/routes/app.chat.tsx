@@ -10,7 +10,7 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 function ChatPage() {
   const [messages, setMessages] = useState<Msg[]>([
-    { role: "assistant", content: "Hey, I'm Nova. What are we creating today?" },
+    { role: "assistant", content: "Hi! I'm Nova — your free unlimited AI assistant. 🎓✨\n\nMain kisi bhi topic pe baat kar sakta hoon:\n• 📚 Padhai — Math, Science, Physics, Chemistry, Biology, History, CS, Coding\n• 📝 Homework, essays, projects, research\n• 🎯 Exams — JEE, NEET, UPSC, Board, SAT\n• 💼 Career, business, life advice\n• 🎨 Creative writing, prompts, ideas\n• 🌐 Translations & casual chat\n\nJitni der chahiye baat karo — koi limit nahi! Kya seekhna/poochhna hai?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
