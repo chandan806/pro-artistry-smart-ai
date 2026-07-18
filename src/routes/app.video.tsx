@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import AssistantWidget from "@/components/AssistantWidget";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Video, Loader2, Play, Pause, Download, Sparkles, Wand2, Upload, Music, Image as ImageIcon, X,
@@ -465,6 +466,11 @@ function VideoPage() {
           <canvas ref={canvasRef} className="hidden" />
         </>
       )}
+      <AssistantWidget toolName={"AI Video Generator"} capabilities={`• Text-to-video storyboards (6 cinematic frames)
+• Image-to-video, audio-to-video
+• Aspect 16:9, 9:16, 1:1 · up to 60s · 720p–4K · custom FPS
+• MP4/WebM export with audio muxing
+• Reels, shorts, ads, cinematic scenes`} />
     </div>
   );
 }
