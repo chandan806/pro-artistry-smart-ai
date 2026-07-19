@@ -23,6 +23,7 @@ import { Route as AppChatRouteImport } from './routes/app.chat'
 import { Route as ApiGenerateImageRouteImport } from './routes/api/generate-image'
 import { Route as ApiEnhancePromptRouteImport } from './routes/api/enhance-prompt'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AppThreadThreadIdRouteImport } from './routes/app.thread.$threadId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -94,6 +95,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppThreadThreadIdRoute = AppThreadThreadIdRouteImport.update({
+  id: '/thread/$threadId',
+  path: '/thread/$threadId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/app/video': typeof AppVideoRoute
   '/app/writer': typeof AppWriterRoute
   '/app/': typeof AppIndexRoute
+  '/app/thread/$threadId': typeof AppThreadThreadIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/app/video': typeof AppVideoRoute
   '/app/writer': typeof AppWriterRoute
   '/app': typeof AppIndexRoute
+  '/app/thread/$threadId': typeof AppThreadThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/app/video': typeof AppVideoRoute
   '/app/writer': typeof AppWriterRoute
   '/app/': typeof AppIndexRoute
+  '/app/thread/$threadId': typeof AppThreadThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/app/video'
     | '/app/writer'
     | '/app/'
+    | '/app/thread/$threadId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/app/video'
     | '/app/writer'
     | '/app'
+    | '/app/thread/$threadId'
   id:
     | '__root__'
     | '/'
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/app/video'
     | '/app/writer'
     | '/app/'
+    | '/app/thread/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -302,6 +314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/thread/$threadId': {
+      id: '/app/thread/$threadId'
+      path: '/thread/$threadId'
+      fullPath: '/app/thread/$threadId'
+      preLoaderRoute: typeof AppThreadThreadIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -314,6 +333,7 @@ interface AppRouteChildren {
   AppVideoRoute: typeof AppVideoRoute
   AppWriterRoute: typeof AppWriterRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppThreadThreadIdRoute: typeof AppThreadThreadIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -325,6 +345,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppVideoRoute: AppVideoRoute,
   AppWriterRoute: AppWriterRoute,
   AppIndexRoute: AppIndexRoute,
+  AppThreadThreadIdRoute: AppThreadThreadIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
