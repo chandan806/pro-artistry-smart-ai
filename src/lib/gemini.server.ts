@@ -1,7 +1,15 @@
 // AI provider layer — powered by OpenRouter for unified access to top models.
 // Kept the filename for backwards compatibility with existing imports.
 
-type ChatMessage = { role: string; content: string; images?: string[] };
+type ChatAttachment = {
+  type: "image" | "pdf" | "text" | "file";
+  name: string;
+  mime: string;
+  dataUrl?: string;
+  text?: string;
+};
+
+type ChatMessage = { role: string; content: string; images?: string[]; attachments?: ChatAttachment[] };
 
 type OpenRouterResponse = {
   choices?: Array<{ message?: { content?: string; images?: Array<{ image_url?: { url?: string } }> } }>;
@@ -59,7 +67,7 @@ export async function generateGeminiText(options: {
     .filter(Boolean)
     .join("\n\n");
 
-  const hasImages = options.messages.some((m) => (m.images?.length ?? 0) > 0);
+  const hasFiles = options.messages.some((m) => (m.images?.length ?? 0) > 0 || (m.attachments?.length ?? 0) > 0);
 
   const messages: Array<{ role: string; content: unknown }> = [];
   if (systemText) messages.push({ role: "system", content: systemText });
@@ -67,19 +75,30 @@ export async function generateGeminiText(options: {
     if (m.role === "system") continue;
     const text = (m.content ?? "").trim();
     const imgs = m.images ?? [];
-    if (!text && imgs.length === 0) continue;
+    const attachments = m.attachments ?? [];
+    if (!text && imgs.length === 0 && attachments.length === 0) continue;
     const role = m.role === "assistant" ? "assistant" : "user";
-    if (imgs.length > 0 && role === "user") {
+    if ((imgs.length > 0 || attachments.length > 0) && role === "user") {
       const content: Array<Record<string, unknown>> = [];
-      if (text) content.push({ type: "text", text });
+      const textFiles = attachments
+        .filter((a) => a.type === "text" && a.text)
+        .map((a) => `\n\n--- ${a.name} ---\n${a.text}`)
+        .join("");
+      if (text || textFiles) content.push({ type: "text", text: `${text}${textFiles}`.trim() });
       for (const url of imgs) content.push({ type: "image_url", image_url: { url } });
+      for (const att of attachments) {
+        if (att.type === "image" && att.dataUrl) content.push({ type: "image_url", image_url: { url: att.dataUrl } });
+        if ((att.type === "pdf" || att.type === "file") && att.dataUrl) {
+          content.push({ type: "file", file: { filename: att.name, file_data: att.dataUrl } });
+        }
+      }
       messages.push({ role, content });
     } else {
       messages.push({ role, content: text });
     }
   }
 
-  const modelsToTry = hasImages ? VISION_MODELS : [TEXT_MODEL, ...VISION_MODELS];
+  const modelsToTry = hasFiles ? [...VISION_MODELS, TEXT_MODEL] : [TEXT_MODEL, ...VISION_MODELS];
   let lastError: unknown;
   for (const model of modelsToTry) {
     try {

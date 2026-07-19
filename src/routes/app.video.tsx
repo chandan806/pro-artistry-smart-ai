@@ -47,7 +47,7 @@ function VideoPage() {
   const [aspect, setAspect] = useState(ASPECTS[0]);
   const [resolution, setResolution] = useState(RESOLUTIONS[1]);
   const [fps, setFps] = useState(30);
-  const [frameCount, setFrameCount] = useState(8);
+  const [frameCount, setFrameCount] = useState(4);
 
   const [refImage, setRefImage] = useState<string | null>(null);
   const [audioFile, setAudioFile] = useState<File | null>(null);
