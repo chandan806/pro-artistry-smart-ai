@@ -7,7 +7,6 @@ import {
   Loader2,
   MessageSquarePlus,
   Paperclip,
-  Plus,
   Send,
   Sparkles,
   Trash2,
@@ -262,7 +261,6 @@ export default function ChatWorkspace({ routeThreadId }: { routeThreadId?: strin
             role: m.role,
             content: m.content,
             attachments: m.attachments,
-            images: m.attachments?.filter((a) => a.type === "image" && a.dataUrl).map((a) => a.dataUrl!),
           })),
         }),
       });

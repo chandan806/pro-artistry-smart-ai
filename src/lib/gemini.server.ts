@@ -109,7 +109,19 @@ export async function generateGeminiText(options: {
       lastError = e;
     }
   }
-  throw new Error(lastError instanceof Error ? lastError.message : "No AI response returned");
+  return localFallbackReply(options.messages, lastError);
+}
+
+function localFallbackReply(messages: ChatMessage[], error: unknown) {
+  const last = [...messages].reverse().find((m) => m.role !== "assistant");
+  const files = last?.attachments ?? [];
+  const fileList = files.map((f) => `${f.name} (${f.type})`).join(", ");
+  const text = last?.content?.trim();
+  const reason = error instanceof Error ? error.message : "free model is busy";
+  if (files.length) {
+    return `Mainne aapki file/photo receive kar li hai: ${fileList}.\n\nFree AI model abhi busy/limit pe hai (${reason}), isliye instant deep analysis nahi aa paya. Aap same message dubara send karo ya PDF/text ka important part paste kar do — main turant summarize, explain, questions answer, aur next steps de dunga. Images ke liye bhi retry karte hi vision fallback use hoga.`;
+  }
+  return `Free AI model abhi busy hai (${reason}). Aapka question receive ho gaya: “${text ?? ""}”. Please ek baar resend karo — Nova Tencent HY3 free model/fallback se fast answer dega.`;
 }
 
 function dataUrlParts(dataUrl: string) {
