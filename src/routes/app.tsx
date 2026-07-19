@@ -49,7 +49,7 @@ function AppShell() {
         </Link>
         <nav className="flex flex-col gap-1">
           {nav.map((n) => {
-            const active = pathname === n.to || (n.to !== "/app" && pathname.startsWith(n.to));
+            const active = pathname === n.to || (n.to !== "/app" && pathname.startsWith(n.to)) || (n.to === "/app/chat" && pathname.startsWith("/app/thread"));
             return (
               <Link
                 key={n.to}
@@ -103,7 +103,7 @@ function AppShell() {
       {/* Mobile bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-30 flex justify-around border-t border-border/50 glass py-2 md:hidden">
         {nav.slice(0, 5).map((n) => {
-          const active = pathname === n.to || (n.to !== "/app" && pathname.startsWith(n.to));
+          const active = pathname === n.to || (n.to !== "/app" && pathname.startsWith(n.to)) || (n.to === "/app/chat" && pathname.startsWith("/app/thread"));
           return (
             <Link
               key={n.to}
